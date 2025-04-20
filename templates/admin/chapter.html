@@ -1,0 +1,293 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Chapter
+{% endblock %}
+
+{% block content %}
+<span style="font-size: 40px; font-weight: 400;">{{subject.name}}: </span>
+<span style="font-size: 60px; font-weight: 600;">{{chapter.name}}</span>
+<p style="font-size: 20px;">{{chapter.description}}</p>
+
+    <button type="button" class="btns add" data-bs-toggle="modal" data-bs-target="#quizModal{{ chapter.id }}">
+        <i class="fa-solid fa-plus fa-sm"></i> Add Quiz
+    </button>
+    
+        <div class="modal fade" id="quizModal{{ chapter.id }}" tabindex="-1" aria-labelledby="quizModalLabel{{ chapter.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-3" id="quizModalLabel{{ chapter.id }}">New Quiz</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('main.addquiz', id=chapter.id)}}" method="POST">
+                        <div>
+                            <label for="remarks">Remarks </label>
+                            <input type="text" id="remarks" name="remarks" required>
+                        </div>
+                        <div>
+                            <label for="date">Date </label>
+                            <input style="width: 35%;" type="date" id="date" name="date" required>
+                        </div>
+                        <div>
+                            <label for="hrs">Hrs </label>
+                            <input style="width: 15%; margin-right: 10px;" type="number" id="hrs" name="hrs" min="0" required>
+                            <label for="min">Min </label>
+                            <input style="width: 15%;" type="number" id="min" name="min" min="0" max="59" required>
+                        </div>
+                        <div>
+                            <input type="submit" value="Add Quiz">
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+    <div style="display: flex;">
+        <div class="qdiv">
+            <span style="font-size: 35px; font-weight: 600;">Saved Quizes</span>
+            {% for quiz in chapter.quizzes %}
+                {% if not quiz.published %}
+                <div class="qdiv2">
+                    <div style="display: flex;">
+                        <a href="{{ url_for('main.quiz', id=quiz.id) }}">
+                        <h3>Quiz {{ loop.index }}</h3>
+                        </a>
+                        <button type="button" class="btns upd" data-bs-toggle="modal" data-bs-target="#updquizModal{{ quiz.id }}">
+                            <i class="fa-solid fa-pencil fa-xs"></i>
+                        </button>
+                        <button type="button" class="btns del" data-bs-toggle="modal" data-bs-target="#delquizModal{{ quiz.id }}">
+                            <i class="fa-solid fa-trash fa-xs"></i>
+                        </button>
+
+                        <div class="modal fade" id="updquizModal{{ quiz.id }}" tabindex="-1" aria-labelledby="updquizModalLabel{{ quiz.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-3" id="updquizModalLabel{{ quiz.id }}">Update Quiz</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('main.updatequiz', id=quiz.id)}}" method="POST">
+                                        <div>
+                                            <label for="remarks">Remarks</label>
+                                            <input type="text" value="{{quiz.remarks}}" id="remarks" name="remarks">
+                                        </div>
+                                        <div>
+                                            <label for="date">Date</label>
+                                            <input style="width: 35%; margin-left: 30px;" type="date" value="{{quiz.date}}" id="date" name="date">
+                                        </div>
+                                        <div>
+                                            <label for="hrs">Hrs</label>
+                                            <input style="width: 15%; margin: 0px 10px;" type="number" value="0" id="hrs" name="hrs" min="0">
+                                            <label for="min">Min</label>
+                                            <input style="width: 15%; margin: 0px 10px;" type="number" value="{{quiz.duration}}" id="min" name="min" min="0" max="59">
+                                        </div>
+                                        <div>
+                                            <input type="submit" value="Update Quiz">
+                                        </div>
+                                    </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        <div class="modal fade" id="delquizModal{{ quiz.id }}" tabindex="-1" aria-labelledby="delquizModalLabel{{ quiz.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-3" id="delquizModalLabel{{ quiz.id }}">Delete Quiz</h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete Quiz?</p>
+                                    <button class="btns canc" data-bs-dismiss="modal">Cancel</button>
+                                    <a href="{{ url_for('main.deletequiz', id=quiz.id) }}">
+                                        <button class="btns del2">Confirm</button>
+                                    </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+
+                    <p>Remarks: {{ quiz.remarks }}</p>
+                    <div style="display: flex; gap: 55px;">
+                    <span><i class="fa-solid fa-calendar-week fa-xl" style="color: #002b75;"></i> <span style="font-weight: bold;">{{quiz.date}}</span></span>
+                    <span><i class="fa-solid fa-clock fa-lg" style="color: #002057;"></i> <span style="font-weight: bold;">{{ quiz.duration }} min</span></span>
+                    <span><i class="fa-solid fa-list-ul fa-lg" style="color: #002566;"></i> <span style="font-weight: bold;">{{quiz.questions|count}} Questions</span></span>
+                </div>
+
+                <button type="button" class="btns pub" data-bs-toggle="modal" data-bs-target="#pubquizModal{{ quiz.id }}">
+                    Publish
+                </button>
+
+                <div class="modal fade" id="pubquizModal{{ quiz.id }}" tabindex="-1" aria-labelledby="pubquizModalLabel{{ quiz.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-3" id="pubquizModalLabel{{ quiz.id }}">Publish Quiz</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to Publish Quiz?</p>
+                            <button class="btns canc" data-bs-dismiss="modal">Cancel</button>
+                            <a href="{{ url_for('main.publishquiz', id=quiz.id) }}">
+                                <button class="btns del2">Confirm</button>
+                            </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="qdiv">
+            <span style="font-size: 35px; font-weight: 600;">Published Quizes</span>
+            {% for quiz in chapter.quizzes %}
+            {% if quiz.published%}
+            <div class="qdiv2">
+                <div style="display: flex;">
+                    <a href="{{ url_for('main.quiz', id=quiz.id) }}">
+                        <h3>Quiz {{ loop.index }}</h3>
+                    </a>
+                    </div>
+                    <p>Remarks: {{ quiz.remarks }}</p>
+                    <div style="display: flex; gap: 45px;">
+                        <span><i class="fa-solid fa-calendar-week fa-xl" style="color: #002b75;"></i> <span style="font-weight: bold;">{{quiz.date}}</span></span>
+                        <span><i class="fa-solid fa-clock fa-lg" style="color: #002057;"></i> <span style="font-weight: bold;">{{ quiz.duration }} min</span></span>
+                        <span><i class="fa-solid fa-list-ul fa-lg" style="color: #002566;"></i> <span style="font-weight: bold;">{{quiz.questions|count}} Questions</span></span>
+                </div>
+                </div>
+            {%endif%}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block style %}
+<style>
+    .qdiv{
+        background-color: white;
+        padding: 20px 30px;
+        border-radius: 15px;
+        width: 44vw;
+        margin: 10px 20px;
+    }
+    .qdiv p{
+        font-size: 18px;
+        margin: 5px 0px;
+    }
+    .qdiv2{
+        background-color: #f0f0f0;
+        border: 1px solid black;
+        color: black;
+        border-radius: 10px;
+        padding: 10px 10px;
+        margin: 20px 0px;
+    }
+    .qdiv2:hover{
+        background-color: #c7c7c7;
+        transition: ease-in;
+    }
+    .qdiv2 span{
+        font-size: 18px;
+    }
+    .qdiv2 h3{
+        color: rgb(78, 34, 132);
+        font-size: 27px;
+        font-weight: 500;
+        margin-right: auto;
+    }
+    .btns{
+        color: white;
+        padding: 2px 6px;
+        width:max-content;
+        border-radius: 5px;
+        margin: 0px 7px;
+        height: fit-content;
+        border: none;
+    }
+    .del{
+        background-color: rgb(248, 0, 0);
+        color: white;
+        border: 3px solid rgb(248, 0, 0);
+        justify-self: center;
+    }
+    .del2{
+        background-color: rgb(248, 0, 0);
+        border: 3px solid rgb(248, 0, 0);
+    }
+    .canc{
+        background-color: rgb(43, 1, 103);
+        border: 3px solid rgb(43, 1, 103);
+    }
+    .del:hover{
+        background-color: white;
+        color: rgb(248, 0, 0);
+    }
+    .upd{
+        background-color: rgb(199, 189, 0);
+        color: white;
+        border: 3px solid rgb(199, 189, 0);
+        justify-self: center;
+        
+    }
+    .upd:hover{
+        background-color: white;
+        color: rgb(199, 189, 0);
+    }
+    .add{
+        background-color: green;
+        border: 3px solid green;
+        margin: 25px 0px;
+        padding: 6px 12px;
+    }
+    .add:hover{
+        background-color: white;
+        color: green;
+    }
+    .pub{
+        background-color: rgb(249, 108, 57);
+        padding: 6px 12px;
+        margin-left: 85%;
+        margin-top: 10px;
+    }
+    .pub:hover{
+        background-color: rgb(185, 49, 0);
+    }
+    .modal-body form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        font-weight: 600;
+    }
+    .modal-body form input[type="text"],input[type="number"],input[type="date"]{
+        padding: 5px;
+        border: 2px solid #868686;
+        border-radius: 5px;
+        width: 60%;
+        height: 5%;
+    }
+
+    .modal-body form input[type="submit"] {
+        background-color: rgb(136, 9, 248);
+        font-size: 18px;
+        border: none;
+        height: 100%;
+        padding: 5px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+    }
+    label{
+        margin-right: 10px;
+    }
+</style>
+{% endblock %}

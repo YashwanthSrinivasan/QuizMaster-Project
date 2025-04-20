@@ -1,0 +1,54 @@
+<div class="nav">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="width: 50px;">
+    <div class="nav1">
+        <a href="/home"><div class="navelm">Home</div></a>
+        <a href="/scorelog"><div class="navelm">Scores</div></a>
+        <a href="/usummary"><div class="navelm">Summary</div></a>
+    </div>
+    <div class="nav2">
+        <span class="welc">{{user.name}}</span>
+        <i class="fa-solid fa-user fa-xl" style="margin-left: 20px;"></i>
+        <a href="/logout"><div class="navelm" style="margin-left: 100px">Logout</div></a>
+    </div>
+</div>
+
+<style>
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
+    .nav{
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        background-color: blueviolet;
+        padding: 20px 20px;
+        align-items: center;
+    }
+    .nav1{
+        display: flex;
+        margin-left: 3vw;
+        align-items: center;
+        gap: 40px;
+    }
+    .nav2{
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    .navelm{
+        font-size: 23px;
+        font-weight: 500;
+        color: white;
+    }
+    .navelm:hover{
+        color: rgb(36, 0, 67);
+    }
+    .welc{
+        font-size: 150%;
+        color: black;
+        font-weight: 500;
+        font-style: italic;
+    }
+</style>

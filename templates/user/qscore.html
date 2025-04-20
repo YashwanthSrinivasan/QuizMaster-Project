@@ -1,0 +1,101 @@
+{% extends 'layout2.html' %}
+
+{% block title %}
+QuizScore
+{% endblock %}
+
+{% block content %}
+<div style="display: flex;">
+    <div class="d1">
+        <h1>{{quiz.chapter.subject.name}}</h1>
+        <h2>{{quiz.chapter.name}} Quiz</h2>
+        <p>Remarks: {{quiz.remarks}}</p>
+        <div class="d3">
+            {%if scores%}
+            <h3>Latest Attempt: {{scores[0].score}}/{{quiz.questions|length}}</h3>
+            {%endif%}
+        </div>
+        <div class="d3">
+            <h3>Max score: &nbsp;&nbsp;{{maxscore}}/{{quiz.questions|length}} </h3>
+            <h3>Avg score: &nbsp;&nbsp;{{avg}}/{{quiz.questions|length}}</h3>
+        </div>
+    </div>
+    <div class="d2">
+        <table>
+            <tr>
+                <th>Si. No</th>
+                <th>Date and Time of Attempt</th>
+                <th>Score</th>
+            </tr>
+            {% for score in scores %}
+                <tr>
+                    <td>{{loop.index}})</td>
+                    <td>{{score.timeofattempt}}</td>
+                    <td>{{score.score}}/{{quiz.questions|length}}</td>
+                </tr>
+            {%endfor%}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+.d1{
+    padding: 10px 10px;
+    width: 20vw;
+    overflow: hidden;
+    position: fixed;
+}
+.d2{
+     width: 75vw;
+    margin-left: 24vw;
+}
+.d3{
+    margin-top: 50px;
+    border: 3px solid black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ede2ff;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th{
+    padding: 20px;
+    font-size: 22px;
+    text-align: left;
+    background-color: black;
+    color: white;
+}
+td{
+    padding: 15px;
+    font-size: 20px;
+    text-align: left;
+    font-weight: 500;
+}
+tr:nth-child(even) {
+    background-color: #e7e7e7;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+h1{
+        font-size: 40px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+    h2{
+        font-size: 30px;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+    h3{
+        font-size: 25px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+</style>
+{% endblock %}

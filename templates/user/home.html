@@ -1,0 +1,169 @@
+{% extends 'layout2.html' %}
+
+{% block title %}
+    Admin Dashboard
+{% endblock %}
+
+{% block content %}
+    <div style="display: flex;">
+        <div style="width: 55vw;">
+        <h1 style="margin-bottom: 20px;">Subjects</h1>
+        <div class="div1">
+        {% for sub in subjects %}
+        <div class="sub" id={{sub.id}}>
+            <div class="title">
+                <span>{{ sub.name }}</span>
+                <p>{{sub.description}}</p>
+                <p><span>Number of Chapters:</span> {{sub.chapters|length}}</p>
+            </div>
+        <div class="desc">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Si</th>
+                        <th style="width: 35%;">Chapter Name</th>
+                        <th style="width: 25%">No of Quizes</th>
+                        <th style="width: 15%;">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chap in sub.chapters %}
+                        <tr>
+                            <td>{{ loop.index }}</td> 
+                            <td>{{ chap.name }}</td>
+                            <td>{{chap.quizzes|length}}</td>
+                            <td><a href="{{ url_for('main.userchapter', id=chap.id) }}"><button class="btns view">View</button></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        {% endfor %}
+    </div>
+    </div>
+    <div class="div2">
+        <h1>Upcomming Quizes</h1>
+        {% for quiz in quizzes %}
+        {% include 'user/quiz.html' with context %}
+            <div class="divq">
+                <div style="display: flex;">
+                    <h4>{{quiz.chapter.subject.name}}: &nbsp;</h4>
+                    <h4>{{quiz.chapter.name}}</h4>
+                    <button type="button" class="btns view" data-bs-toggle="modal" data-bs-target="#quiz{{quiz.id}}">Attempt</button>
+                </div>
+                <p style="font-size: large;">Remarks: {{quiz.remarks}}</p>
+                <div style="display: flex; gap: 45px; justify-content: center;">
+                    <p><i class="fa-solid fa-calendar-week fa-xl" style="color: #002b75;"></i> {{quiz.date}}</p>
+                    <p><i class="fa-solid fa-clock fa-lg" style="color: #002057;"></i> {{quiz.duration}} min</p>
+                    <p><i class="fa-solid fa-list-ul fa-lg" style="color: #002566;"></i> {{quiz.questions|length}} Questions</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block style %}
+    <style>
+    .div1{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5vh 3vw;
+    }
+    .div2{
+        display: flex;
+        flex-direction: column;
+        width: 35vw;
+        justify-items: center;
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 20px;
+        align-items: center;
+    }
+    .divq{
+        width: 30vw;
+        border-radius: 5px;
+        background-color: #d1d1d1;
+        padding: 10px;
+        overflow: hidden;
+    }
+    .divq:hover{
+        background-color: #a5a5a5;
+    }
+    .sub{
+        border: 2px solid rgb(43, 1, 103);
+        border-radius: 15px;
+        width: 25vw;
+        overflow: hidden;
+        background-color: white;
+    }
+    .title{
+        background-color: rgb(43, 1, 103);
+        padding: 10px 20px;
+        height: auto;
+        overflow: hidden;
+    }
+    .title span {
+        font-size: 38px;
+        font-weight: 600;
+        color: white;
+    }
+    .title p{
+        margin: 0px;
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+    }
+    .title p span{
+        font-size: 15px;
+        font-weight: 700;
+    }
+    .desc{
+        height: 210px;
+        padding: 0px 12px;
+        overflow: auto;
+        scrollbar-width: none;
+    }
+    .btns{
+        color: white;
+        padding: 2px 4px;
+        width:max-content;
+        border-radius: 5px;
+        margin: 0px 0px;
+        background-color: inherit;
+        border: none;
+    }
+    .view{
+        background-color: rgb(0, 115, 255);
+        border: 3px solid rgb(0, 115, 255);
+        font-size: 15px;
+        margin-left: auto;
+    }
+    table {
+        width: 100%;
+        table-layout: fixed;
+        justify-self: center;
+        border-collapse: collapse;
+        margin-top: 8px;
+        background: white;
+    }
+    th{
+        z-index: 9;
+        background-color: #b3b3b3;
+        color: black;
+        padding: 5px;
+        font-size: 15px;
+        position: sticky;
+        top: 12px;
+    }
+    td{
+        padding: 8px;
+        text-align: left;
+        overflow: hidden;
+        font-size: 17px;
+        position: sticky;
+        top: 12px;
+    }
+    </style>
+    {% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'layout2.html' %}
+
+{% block title %}
+    Summary
+{% endblock %}
+
+{% block content %}
+<h2>Subject Wise Quizzes Attempted</h2>
+<div style="display: flex;">
+    <div class="div1">
+        <canvas id="attemptedChart"></canvas>
+    </div>
+    <div style="margin-left: auto;">
+        <div class="div2">
+            <h3>Highest Score: &nbsp;&nbsp;<span style="font-weight: 700;">{{max_score}} %</span></h3>
+        </div>
+        <div class="div2">
+            <h3>Lowest Score:  &nbsp;&nbsp;<span style="font-weight: 700;">{{min_score}} %</span></h3>
+        </div>
+        <div class="div2">
+            <h3>Average Score: &nbsp;&nbsp;<span style="font-weight: 700;">{{avg_score}} %</span></h3>
+        </div>
+    </div>
+</div>
+
+<h2>Subject Wise Average Score</h2>
+<div class="div1">
+    <canvas id="averageChart"></canvas>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+<script>
+    const attemptedQuizzes = JSON.parse('{{ attempted_quizzes | tojson | safe }}');
+    const averageScores = JSON.parse('{{ average_scores | tojson | safe }}');
+
+    const attemptedLabels = attemptedQuizzes.map(item => item[0]);
+    const attemptedData = attemptedQuizzes.map(item => item[1]);
+
+
+    const avgLabels = averageScores.map(item => item[0]);
+    const avgData = averageScores.map(item => item[1]);
+
+
+    const attemptedCtx = document.getElementById('attemptedChart').getContext('2d');
+    new Chart(attemptedCtx, {
+        type: 'pie',
+        data: {
+            labels: attemptedLabels,
+            datasets: [{
+                label: 'Quizzes Attempted',
+                data: attemptedData,
+                backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
+                hoverOffset: 4
+            }]
+        }
+    });
+
+
+    const avgCtx = document.getElementById('averageChart').getContext('2d');
+    new Chart(avgCtx, {
+        type: 'bar',
+        data: {
+            labels: avgLabels,
+            datasets: [{
+                label: 'Average Score %',
+                data: avgData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+ </script>
+{% endblock %}
+
+{% block style %}
+<style>
+.div1{
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    height: 550px;
+    margin-left: 100px;
+}
+.div2{
+    color: white;
+    background-color: rgb(76, 0, 147);
+    border-radius: 5px;
+    padding: 20px 20px;
+    margin: 50px;
+}
+</style>
+{% endblock %}

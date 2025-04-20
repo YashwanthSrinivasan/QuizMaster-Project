@@ -1,0 +1,61 @@
+{% extends 'layout2.html' %}
+
+{% block title %}
+All Scores
+{% endblock %}
+
+{% block content %}
+<h1>Score Log</h1>
+<p></p>
+<table>
+    <tr>
+        <th>Si No</th>
+        <th>Subject</th>
+        <th>Chapter</th>
+        <th>Quiz Remarks</th>
+        <th>Date and Time of Attempt</th>
+        <th>Score</th>
+    </tr>
+    {% for score in scores %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{score.quiz.chapter.subject.name}}</td>
+            <td>{{score.quiz.chapter.name}}</td>
+            <td>{{score.quiz.remarks}}</td>
+            <td>{{score.timeofattempt}}</td>
+            <td>{{score.score}}/{{score.quiz.questions|length}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+        
+{% endblock %}
+
+{% block style %}
+ <style>
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th{
+    padding: 25px;
+    font-size: 22px;
+    text-align: left;
+    background-color: rgb(50, 50, 50);
+    color: white;
+}
+td{
+    padding: 20px;
+    font-size: 22px;
+    text-align: left;
+    font-weight: 500;
+    overflow: hidden;
+}
+tr:nth-child(even) {
+    background-color: #e7e7e7;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+</style>
+{% endblock %}

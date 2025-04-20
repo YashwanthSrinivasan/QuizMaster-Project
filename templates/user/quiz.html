@@ -1,0 +1,44 @@
+<div class="modal fade" id="quiz{{ quiz.id }}" tabindex="-1" aria-labelledby="quiz{{ quiz.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-3" id="quiz{{ quiz.id }}">Quiz View</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p class="p1">Subject: {{quiz.chapter.subject.name}}</p>
+            <p class="p1">Chapter: {{quiz.chapter.name}}</p>
+            <p >Remarks: {{quiz.remarks}}</p>
+            <p><i class="fa-solid fa-calendar-week fa-xl" style="color: #002b75;"></i> {{quiz.date}}</p>
+            <p><i class="fa-solid fa-clock fa-lg" style="color: #002057;"></i> {{quiz.duration}} min</p>
+            <p><i class="fa-solid fa-list-ul fa-lg" style="color: #002566;"></i> {{quiz.questions|length}} Questions</p>
+            <div class="st1">
+              {% if current_date==quiz.date%}
+                <a href="{{ url_for('main.attemptquiz', id=quiz.id) }}">
+                    <button class="btns start">Start</button>
+                </a>
+              {% else %}
+                <p style="color: red;">Cannot Attempt Quiz Today !</p>
+              {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+ <style>
+  .p1{
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .start{
+        background-color: rgb(0, 115, 255);
+        border: 3px solid rgb(0, 115, 255);
+        font-size: 20px;
+        padding: 0px 15px;
+    }
+  .st1{
+    display: flex;
+    justify-content: center;
+  }
+ </style>

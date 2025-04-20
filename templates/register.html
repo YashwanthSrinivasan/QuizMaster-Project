@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    {% include 'messages.html' with context %}
+    <div class="full">
+        <div class="div1">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+            <h1 style="font-size: 50px;">Quiz Master</h1>
+            <h3>Test Your Knowledge, Challenge Your Mind!</h2>
+        </div>
+        <div class="div2">
+            <h1 style="margin-bottom: 20px;">Register</h1>
+            <form action="{{url_for('main.register')}}" class="form" method="post">
+                <div>
+                    <h3>Username</h3>
+                    <input type="text" name="username" required>
+                </div>
+                <div>
+                    <h3>Password</h3>
+                    <input type="password" name="password" required>
+                </div>
+                <div>
+                    <h3>Confirm password</h3>
+                    <input type="password" name="confirm_password" required>
+                </div>
+                <div>
+                    <h3>Full Name</h3>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <h3>Qualification</h3>
+                    <input type="text" name="qualification">
+                </div>
+                <div>
+                    <input type="submit" value="Register">
+                </div>
+            </form>
+            <div class="div3">
+                <p>Aldready a User <a href="/login">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    .full{
+        display: flex;
+        background-color: rgb(245, 238, 250);
+    }
+    .div1{
+        margin: 7vw 10vw;
+    }
+    .div1 img{
+        width: 20vw;
+        margin: 2vw 0vw;
+    }
+    .div2{
+        margin: 5vh 10vw;
+        background-color:white;
+        display: flex;
+        flex-direction: column;
+        border-radius: 25px;
+        padding: 4vh 3vw;
+        width: 25vw;
+        box-shadow: 2px 2px 10px rgb(100, 100, 100);
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+    .form input[type="text"], 
+    .form input[type="password"]{
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 90%;
+        height: 15%;
+    }
+    .form input[type="submit"] {
+        margin: 0px 140px;
+        background-color: rgb(136, 9, 248);
+        font-size: 20px;
+        border: none;
+        padding: 5px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+    }
+    a{
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 500;
+        color: rgb(136, 9, 248);
+    }
+    .div3{
+        margin: 15px 0px;
+    }
+</style>
+</html>

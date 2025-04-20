@@ -1,0 +1,78 @@
+<div class="nav">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" style="width: 50px;">
+    <div class="nav1">
+        <a href="/adminhome"><div class="navelm">Home</div></a>
+        <a href="/quizzes"><div class="navelm">Quizes</div></a>
+        <a href="/summary"><div class="navelm">Summary</div></a>
+    </div>
+        <div class="sbar">
+            <form action="{{ url_for('main.search') }}" method="post" class="search">
+                <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                <input type="text" name="searchq" placeholder="Search for users, subjects, chapters...">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+        <span class="welc">Welcome Admin!</span>
+        <a href="/logout"><div class="navelm" style="margin-left: auto;">Logout</div></a>
+</div>
+
+<style>
+    a{
+        text-decoration: none;
+    }
+    .nav{
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        background-color: blueviolet;
+        padding: 20px 20px;
+        align-items: center;
+    }
+    .nav1{
+        display: flex;
+        margin-left: 3vw;
+        align-items: center;
+        gap: 40px;
+    }
+    .navelm{
+        font-size: 23px;
+        font-weight: 500;
+        color: white;
+    }
+    .navelm:hover{
+        color: rgb(36, 0, 67);
+    }
+    .sbar{
+        margin-left: 100px;
+        background-color: white;
+        padding-left: 10px;
+    }
+    .search input[type="text"]{
+        padding: 10px;
+        font-size: 15px;
+        border: none;
+        margin-left: 3px;
+        width: 300px;
+        height: 40px;
+    }
+    .search input[type="submit"] {
+        margin: 0px 0px;
+        background-color: rgb(187, 111, 253);
+        font-size: 18px;
+        border: none;
+        padding: 7px 20px;
+        cursor: pointer;
+        color: white;
+    }
+    .search input[type="submit"]:hover{
+        background-color: rgb(169, 78, 249);
+    }
+    .welc{
+        margin-left: 5%;
+        font-size: 25px;
+        color: black;
+        font-weight: 500;
+        font-style: italic;
+    }
+</style>

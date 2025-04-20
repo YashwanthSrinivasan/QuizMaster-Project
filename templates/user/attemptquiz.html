@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AttemptQuiz</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        let timeLeft = "{{ remtime }}";
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 0) {
+                document.getElementById('quizForm').submit();
+            } else {
+                timeLeft--;
+                setTimeout(updateTimerDisplay, 1000);
+            }
+        }
+
+        window.onload = function () {
+            updateTimerDisplay();
+        };
+    </script>
+</head>
+<body>
+    <div style="display: flex;">
+        <div class="d1">
+            <h1>{{quiz.chapter.subject.name}}</h1>
+            <h2>{{quiz.chapter.name}} Quiz</h2>
+            <p>Remarks: {{quiz.remarks}}</p>
+            <p><i class="fa-solid fa-calendar-week fa-xl" style="color: #002b75;"></i> {{quiz.date}}</p>
+            <p><i class="fa-solid fa-clock fa-lg" style="color: #002057;"></i> {{quiz.duration}} min</p>
+            <p><i class="fa-solid fa-list-ul fa-lg" style="color: #002566;"></i> {{quiz.questions|length}} Questions</p>
+            <div style="display: flex; justify-content: center">
+                <div class="timer">
+                    Time Left: <span id="timer"></span>
+                </div>
+            </div>
+        </div>
+        <div class="d2">
+        <form id="quizForm" action="{{ url_for('main.attemptquiz', id=quiz.id) }}" method="post">
+            <h2>Questions</h2>
+            {% for que in quiz.questions %}
+                <div class="que">
+                    <h3>{{loop.index}}) {{ que.question }}</h3>
+                    <input type="radio" name="ans{{ que.id }}" value="1"> <span>a)</span> &nbsp;&nbsp;{{ que.option1 }}<br>
+                    <input type="radio" name="ans{{ que.id }}" value="2"> <span>b)</span> &nbsp;&nbsp;{{ que.option2 }}<br>
+                    <input type="radio" name="ans{{ que.id }}" value="3"> <span>c)</span> &nbsp;&nbsp;{{ que.option3 }}<br>
+                    <input type="radio" name="ans{{ que.id }}" value="4"> <span>d)</span> &nbsp;&nbsp;{{ que.option4 }}<br>
+                </div>
+            {% endfor %}
+            <div class="sub">
+                <input class="btns sub" type="submit" value="Submit">
+            </div>
+        </form>
+        </div>
+    </div>
+</body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+    *{
+        font-family: 'Poppins', sans-serif;
+    }
+    .d1{
+        background-color: rgb(188, 177, 251);
+        border-radius: 10px;
+        padding: 10px 20px;
+        width: 20vw;
+        height: 65vh;
+        overflow: hidden;
+        position: fixed;
+    }
+    .d2{
+        width: 75vw;
+        margin-left: 24vw;
+    }
+    h1{
+        font-size: 40px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+    h2{
+        font-size: 30px;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+    h3{
+        font-size: 20px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
+    body{
+        padding: 30px 70px;
+        background-color: rgb(253, 251, 254);
+        min-height: 100vh;
+    }
+    a{
+        display: contents;
+    }
+
+    .timer{
+        font-size: 20px;
+        background-color: rgb(146, 0, 0);
+        padding: 10px 10px;
+        width: fit-content;
+        border-radius: 6px;
+        color: white;
+        justify-self: center;
+        margin: 20px 0;
+    }
+    .timer span{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .que{
+        background-color: rgb(208, 186, 237);
+        padding: 10px 20px;
+        margin: 20px 10px;
+        border-radius: 8px;
+        font-size: 18px;
+    }
+    .que span{
+        font-weight: 600;
+    }
+    .btns{
+        color: white;
+        padding: 5px 10px;
+        font-size: 20px;
+        font-weight: 600;
+        width:max-content;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(0, 158, 55);
+        color: white;
+        margin: 10px 0;
+    }
+    .sub{
+        justify-self: center;
+    }
+    input[type="radio"] {
+        width: 15px;
+        height: 15px;
+    }
+</style>
+</html>

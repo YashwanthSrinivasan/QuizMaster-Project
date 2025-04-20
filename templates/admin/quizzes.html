@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Quizzes
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1>All Quizzes</h1>
+    <table>
+        <tr>
+            <th>Si No</th>
+            <th>Subject</th>
+            <th>Chapter</th>
+            <th>Remarks</th>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>No of Ques</th>
+            <th>View</th>
+        </tr>
+        {%for quiz in quizzes%}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{quiz.chapter.subject.name}}</td>
+            <td>{{quiz.chapter.name}}</td>
+            <td>{{quiz.remarks}}</td>
+            <td>{{quiz.date}}</td>
+            <td>{{quiz.duration}} min</td>
+            <td>{{quiz.questions|length}}</td>
+            <td><a href="{{url_for('main.quiz', id=quiz.id) }}">View</a></td>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    padding: 20px;
+    font-size: 22px;
+    text-align: left;
+    background-color: black;
+    color: white;
+}
+td{
+    padding: 15px;
+    font-size: 20px;
+    text-align: left;
+    font-weight: 500;
+}
+tr:nth-child(even) {
+    background-color: #e7e7e7;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+</style>
+{% endblock %}

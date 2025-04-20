@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block content %}
+    <h1>Search Results: "{{search}}"</h1>
+        {% for user in users %}
+        {%if user.username!="admin"%}
+        <div class="d1">
+            <div class="d2 user">User</div>{{ user.name }}
+        </div>
+        {%endif%}
+        {% endfor %}
+
+        {% for sub in subjects %}
+        <a href="{{ url_for('main.adminhome') }}#{{ sub.id }}">
+            <div class="d1">
+                <div class="d2 sub">Subject</div>{{ sub.name }}
+            </div>
+        </a>
+        {% endfor %}
+
+        {% for chap in chapters %}
+        <a href="{{ url_for('main.chapter', id=chap.id) }}">
+            <div class="d1">
+                <div class="d2 chap">Chapter</div>{{ chap.name }} 
+            </div>
+        </a>
+        {% endfor %}
+
+        {% for quiz in quizzes %}
+        <a href="{{ url_for('main.quiz', id=quiz.id) }}">
+            <div class="d1">
+                <div class="d2 quiz">Quiz</div>{{ quiz.remarks }}: {{quiz.chapter.name}}
+            </div>
+        </a>
+        {% endfor %}
+{% endblock %}
+
+{% block style %}
+<style>
+.d1{
+    color: black;
+    font-size: 20px;
+    display: flex;
+    border-radius: 5px;
+    background-color: rgb(219, 219, 219);
+    padding: 20px 10px;
+    margin: 20px 10px;
+}
+.d1:hover{
+    background-color: rgb(162, 162, 162);
+}
+.d2{
+    width: fit-content;
+    margin: 0 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    
+}
+.user{
+    background-color: rgb(255, 70, 70);
+}
+.sub{
+    background-color: rgb(103, 103, 255);
+}
+.chap{
+    background-color: rgb(147, 255, 147);
+}
+.quiz{
+    background-color: rgb(216, 138, 255);
+}
+</style>
+{% endblock %}
